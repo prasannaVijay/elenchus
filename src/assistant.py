@@ -5,9 +5,18 @@ from pathlib import Path
 
 from openai import OpenAI
 from openai.types.beta import vector_store
+from dotenv import load_dotenv
+
+# Load environment variables from the .env file
+load_dotenv()
+
 
 ASSISTANT_NAME = os.environ.get('ASSISTANT_NAME', 'studor')
 OPENAI_API_KEY = os.environ['OPENAI_API_KEY']
+
+if not OPENAI_API_KEY:
+    raise ValueError("OPENAI_API_KEY is not set in the environment variables.")
+
 
 
 class Assistant(object):
@@ -18,13 +27,13 @@ class Assistant(object):
 
   @staticmethod
   def add_knowledge():
-    persona_file = Path("./resources/personas.txt")
+    persona_file = Path("../resources/personas.txt")
     if persona_file:
       print("got a persona file")
       vector_store = Assistant.client.beta.vector_stores.create(
           name="Personas")
 
-      file_paths = ["./resources/personas.txt"]
+      file_paths = ["../resources/personas.txt"]
       file_streams = [open(path, "rb") for path in file_paths]
 
       file_batch = Assistant.client.beta.vector_stores.file_batches.upload_and_poll(
@@ -37,7 +46,7 @@ class Assistant(object):
       return None
 
   def create_assistant(self):
-    assistant_file_path = './resources/{name}.json'.format(name=ASSISTANT_NAME)
+    assistant_file_path = '../resources/{name}.json'.format(name=ASSISTANT_NAME)
 
     if os.path.exists(assistant_file_path):
       with open(assistant_file_path, 'r') as file:
@@ -46,7 +55,7 @@ class Assistant(object):
         print("Loaded existing assistant ID.")
     else:
       personas = ""
-      with open("./resources/personas.txt") as f:
+      with open("../resources/personas.txt") as f:
         personas = f.readlines()
         print("Read personas: {p}".format(p=personas))
       assistant = Assistant.client.beta.assistants.create(instructions="""

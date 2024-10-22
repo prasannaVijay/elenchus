@@ -1,9 +1,12 @@
 from flask import Flask, jsonify, request
 
 from assistant import Assistant
+from flask_cors import CORS
+
 
 # Start Flask app
 app = Flask(__name__)
+CORS(app)
 
 # Create new assistant or load existing
 assistant = Assistant()
@@ -46,4 +49,4 @@ def chat():
 
 # Run server
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=8080)
+    app.run(debug=True, host='0.0.0.0', port=8000)
