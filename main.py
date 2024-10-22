@@ -1,11 +1,13 @@
+# main.py
+
 from flask import Flask, jsonify, request
 import sys
 import os
 
 # Add the 'src' directory to sys.path so the assistant module can be found
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
 
-from src.assistant import Assistant  # Now this should work
+from assistant import Assistant  # Now this should work
 from flask_cors import CORS
 
 # Start Flask app
