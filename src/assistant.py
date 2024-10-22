@@ -55,7 +55,7 @@ class Assistant(object):
         print("Loaded existing assistant ID.")
     else:
       personas = ""
-      with open("../resources/personas.txt") as f:
+      with open(os.path.join(os.path.dirname(__file__), '../resources/personas.txt')) as f:
         personas = f.readlines()
         print("Read personas: {p}".format(p=personas))
       assistant = Assistant.client.beta.assistants.create(instructions="""
